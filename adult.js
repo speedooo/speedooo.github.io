@@ -206,40 +206,41 @@ d3.csv("data/convicted_offenders.csv", function (data) {
                 return genderConverter[d.key];  })
             .renderLabel(true).colors(d3.scale.ordinal().range(['red','green','blue']));
 
-        sentence_chart = dc.rowChart("#sentence-chart")
+    //    sentence_chart = dc.rowChart("#sentence-chart")
+    //        .width($("#sentence-chart").width()).height(400)
+    //       .dimension(sentence).group(countBySentence)
+    //        .elasticX(true).gap(7)
+    //        .label(function (d) {
+    //            return sentenceConverter[d.key];  })
+    //        .title(function (d) {
+    //            return sentenceConverter[d.key] + " (" + d.value + ")"; })
+    //        .renderLabel(true).xAxis().ticks(3);
+
+        sentence_chart = dc.barChart("#sentence-chart")
             .width($("#sentence-chart").width()).height(400)
             .dimension(sentence).group(countBySentence)
-            .elasticX(true).gap(7)
-            .label(function (d) {
-                return sentenceConverter[d.key];  })
+            .margins({top: 10, right: 50, bottom: 25, left: 50})
+            .xAxisPadding(20).xUnits(dc.units.ordinal)
+            .ordinalColors(["#6a51a3", "#2171b5", "#238b45", "#d94801", "#cb181d"])
+            .transitionDuration(500)
+            .x(d3.scale.ordinal().domain(sentenceConverter))
+            //.y(d3.scale.linear().domain([min, max]))
+            .gap(10)
+            .brushOn(false)
+            .renderTitle(true)
             .title(function (d) {
                 return sentenceConverter[d.key] + " (" + d.value + ")"; })
-            .renderLabel(true).xAxis().ticks(3);
-
-//        sentence_chart = dc.barChart("#sentence-chart")
-//            .width($("#sentence-chart").width()).height(400)
-//            .dimension(sentence).group(countBySentence)
-//            .xAxisPadding(20).xUnits(dc.units.ordinal)
-//            .ordinalColors(["#6a51a3", "#2171b5", "#238b45", "#d94801", "#cb181d"])
-//            .transitionDuration(500)
-//            .x(d3.scale.ordinal().domain(sentenceConverter))
-//            //.y(d3.scale.linear())
-//            .gap(10)
-//            .brushOn(false)
-//            .renderTitle(true)
-//            .title(function (d) {
-//                return sentenceConverter[d.key] + " (" + d.value + ")"; })
-//            .renderlet(function (chart) {chart.append("text")
-//                .attr("x", "10")
-//                .attr("y", "10" )
-//                .attr('dy', '.75em').attr('transform', "rotate(-65)")
-//                .text(function(d){return sentenceConverter[d.key]});})
-//            .xAxis().tickFormat(function (v) {
-//                return v;})
-////            .yAxis().ticks(5).tickFormat(function (v) {
-////                return v/1000+"K";
-////            });
-
+            .renderlet(function (chart) {chart.append("text")
+                .attr("x", "10")
+                .attr("y", "10" )
+             //   .attr('dy', '.75em').attr('transform', "rotate(-65)")
+                .text(function(d){return sentenceConverter[d.key]});})
+            //.xAxis().tickFormat(function (v) {
+            //    return v;})
+            .yAxis().tickFormat(function (v) {
+                return v/1000+"K";
+            });
+            
         region_chart = dc.geoChoroplethChart("#region-chart")
             .width(350)
             .height(330)
